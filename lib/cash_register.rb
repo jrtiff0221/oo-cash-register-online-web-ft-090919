@@ -1,22 +1,17 @@
 class CashRegister
-  attr_accessor :cash_register, :total, :discount, :items, :transactions
+  attr_accessor :cash_register, :total, :discount, :items, :last_item_total
   
   def initialize(discount = 0)
     @items = []
-    @transactions = {}
     @total = 0
+    @last_item_total = 0
     @discount = discount
   end
   
   def add_item(title, price, quantity = 1)
-    @total += price * quantity
-    
-    quantity.times{ @items << title }
-    
-    @transactions[title] = {
-      :quantity => quantity,
-      :price => price
-    }
+    @last_item_total = price * quantity 
+    @total += @last_item_total
+    quantity.times{ |i| @items << title }
   end
   
   def items
@@ -33,10 +28,6 @@ class CashRegister
   end
   
   def void_last_transaction
-    last_item = @items.last
-    last_transaction = @transactions[last_item]
-    cost = last_transaction[:quantity] * last_transaction[:price]
-    @items = @items.reject { |item| item == last_item }
-    @total -= cost
+    @total -= @last_item_total
   end
 end
