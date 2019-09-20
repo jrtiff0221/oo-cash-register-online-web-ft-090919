@@ -11,7 +11,7 @@ class CashRegister
   def add_item(title, price, quantity = 1)
     @total += price * quantity
     
-    (1..quantity).each{ |i| @items << title }
+    quantity.times{ @items << title }
     
     @transactions[title] = {
       :quantity => quantity,
